@@ -1,2 +1,22 @@
-.gitkeep - create this file inside a empty folder so that we can push that folder to github.
-nodemon - so that we dont have to rereun the server again after any changes.
+- .gitkeep : create this file inside a empty folder so that we can push that folder to github.
+
+- nodemon : so that we dont have to rereun the server again after any changes.
+
+
+*** DB ***
+- DB IP address : On the mongodb cluster change the ip address allowance from 0.0.0.0/0 (allowing everyone) to just the IP address where our backend is deployed (backend can be deployed on aws, digitalOcean, etc).
+
+- DB is in another continent, so always use try catch and promises bcoz it takes time & maybe gives error while interacting with data.
+- always use async await while interacting with DB.
+
+*** NodeJS ***
+- nodejs gives us access of process (basically our current application is running on a process ) . process is just the reference of that it gives us some methods like process.exit(1) [for handling errors]
+
+*** File importing ***
+- fix it by giving the proper path till the file(incling file name).
+- if above not work then add the file extension also.
+
+
+*** dotenv ***
+- include dotenv into the project using "import" is also taught in the lecture. (for this some changes in package.json script also required)
+
