@@ -44,6 +44,14 @@ Which function threw the error, What chain of function calls led there, Exactly 
 
 - ApiResponse class util : It helps structure server responses in a clean, consistent format.
 
+*** cloudinary ***
+- It is a third party platform for storing files, images, videos. it gives us the string to access the data after storing.
 
+*** multer ***
+- Multer is a middleware for handling multipart/form-data, which is primarily used for uploading files in Node.js applications using Express.It parses incoming form data that contains files.
+📁 Stores files either in memory or on disk (you choose).
+🧩 Used with forms that include file uploads (<input type="file" />).
+
+now using multer we are first retireiving the file from the user and then stroing tii locally on the server inside the public->temp folder. then taking files from it and storing it on the cloudinary.
 
 
