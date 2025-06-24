@@ -1,6 +1,6 @@
 - .gitkeep : create this file inside a empty folder so that we can push that folder to github.
 
-- nodemon : so that we dont have to rerun the server again and again after any changes.
+- nodemon : so that we dont have to re-run the server again and again after any changes.
 
 
 *** DB ***
@@ -28,7 +28,7 @@
 - app.use(cookieParser()) : it is used to set and read the cookies on the users browser by the server only.
  Mainly it parses cookies from incoming requests and makes them available via req.cookies.
  
-JWTs are often stored from frontend :
+If jwt tokens from frontend are sent using  :
 In cookies → then cookie-parser is needed.
 In Authorization headers → no cookie-parser needed.
 
@@ -36,7 +36,14 @@ In Authorization headers → no cookie-parser needed.
 simple : AsyncHandler ek wrapper function hai jo ki ek async function input lega and apne andr ek or function bnayega and us function ka output return krega, wo function promisefy krega input function ko and if it catches the error then it passes it to next(err).
 next(err) triggers Express’s centralized error-handling middleware.
 
+In Express, if an async route throws an error, it’s not caught by default, and you must use .catch() or try...catch. Otherwise, the app crashes or the error is silently ignored.
+
+
 - ApiError class util : This ApiError class extends the built-in Error class and allows you to create custom, structured error responses.
+
+the ApiError is thrown in your backend code and the response is sent to the frontend by your Express global error-handling middleware.
+
+when the ApiError throws error it is catched by the AsyncHandler and then error is forwarded to express global error middleware then it will sent a response to the frontend.
 
 stack : stack is a string that represents the stack trace at the time the error was created. It helps you understand where the error happened in your code.
 It’s super helpful when debugging because it shows you:
@@ -45,16 +52,16 @@ Which function threw the error, What chain of function calls led there, Exactly 
 - ApiResponse class util : It helps structure server responses in a clean, consistent format.
 
 - if we are exporting using "export default functionName" then we can change the name while importing that function,
-  but if we are exporting using "export {functionName}" then we have to import it using the same name.
+  but if we are exporting using "export {functionName}" then we have to import it using the same name or we have to use 'as' keyword i we want to change the name.
   
 *** cloudinary ***
 - It is a third party platform for storing files, images, videos. it gives us the string to access the data after storing.
 
 *** multer ***
-- Multer is a middleware for handling multipart/form-data, which is primarily used for uploading files in Node.js applications using Express.It parses incoming form data that contains files.
+- Multer is a middleware for handling multipart/form-data, which is primarily used for uploading files in Node.js applications using Express. It parses incoming form data that contains files.
 📁 Stores files either in memory or on disk (you choose).
 🧩 Used with forms that include file uploads (<input type="file" />).
 
-now using multer we are first retireiving the file from the user and then storing it locally on the server inside the public->temp folder. then taking files from it and storing it on the cloudinary.
+now using multer we are first retreiving the file from the user and then storing it locally on the server inside the public->temp folder. then taking files from it and storing it on the cloudinary.
 
 

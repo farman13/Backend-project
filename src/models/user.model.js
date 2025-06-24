@@ -50,7 +50,7 @@ const userSchema = new Schema({
     }
 )
 
-// this is the middleware(hook) which runs just before every db user collection operation (NOTE: we cannot use arrow function syntax here bcoz it dont have access to 'this' operator)
+// this is the middleware(hook) which runs just before user.save()/ user.create db user collection operation (NOTE: we cannot use arrow function syntax here bcoz it dont have access to 'this' operator)
 userSchema.pre("save", async function (next) {
 
     if (!this.isModified("password")) return next();
@@ -59,7 +59,8 @@ userSchema.pre("save", async function (next) {
     next()
 })
 
-// we can create custom methods also to perform operations on user collection(some inbuilt methods are findOne, updateOne, createOne, findMany, etc).
+// we can create custom methods also to perform operations on user collection(some inbuilt methods are findOne, updateOne, createOne, findMany, etc), but this custom function will
+// only called by created user instances not by the model( User).
 userSchema.methods.isPasswordCorrect = async function (password) {
     return await bcrypt.compare(password, this.password)
 }

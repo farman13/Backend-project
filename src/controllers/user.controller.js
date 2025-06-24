@@ -31,10 +31,12 @@ export const registerUser = AsyncHandler(async (req, res) => {
     }
 
     if (!avatarLocalPath) {
-        throw new ApiError(400, "Avatar file is required")
+        throw new ApiError(400, "Avatar path is required")
     }
 
+    console.log("PATHHHH ", avatarLocalPath)
     const avatar = await uploadOnCloudinary(avatarLocalPath);
+    console.log("AAAAAAAA", avatar)
     const coverImage = await uploadOnCloudinary(coverImageLocalPath);
 
     if (!avatar) {
@@ -72,19 +74,19 @@ export const loginUser = AsyncHandler(async (req, res) => {
     }
 
     const user = await User.findOne({
-        $or: [username, email]
+        $or: [{ username }, { email }]
     })
 
     if (await user.isPasswordCorrect(password)) {
-        res.status(401).json(
+        return res.status(401).json(
             new ApiResponse(401, "Incorrect Password")
         )
     }
 
-    const { accessToken, refreshToken } = generateAccessAndRefreshToken(user._id);
+    const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id);
 
     const options = {
-        http: true,
+        httpOnly: true,
         secure: true
     }
 
@@ -92,18 +94,20 @@ export const loginUser = AsyncHandler(async (req, res) => {
         .cookie('accessToken', accessToken, options)
         .cookie('refreshToken', refreshToken, options)
         .json(
-            new ApiResponse(200, accessToken, refreshToken, "User logged In successfully")
+            new ApiResponse(200, [{ accessToken: accessToken }, { refreshToken: refreshToken }, "User logged In successfully"])
         )
 })
 
 
 const generateAccessAndRefreshToken = async (userId) => {
+    console.log(userId);
     const user = await User.findById(userId);
-
+    console.log(user);
     const accessToken = user.generateAccessToken();
     const refreshToken = user.generateRefreshToken();
 
     user.refreshToken = refreshToken;
+    await user.save();
 
     return { accessToken, refreshToken };
 } 
