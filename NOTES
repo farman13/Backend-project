@@ -1,6 +1,6 @@
 - .gitkeep : create this file inside a empty folder so that we can push that folder to github.
 
-- nodemon : so that we dont have to rereun the server again after any changes.
+- nodemon : so that we dont have to rerun the server again and again after any changes.
 
 
 *** DB ***
@@ -55,6 +55,6 @@ Which function threw the error, What chain of function calls led there, Exactly 
 📁 Stores files either in memory or on disk (you choose).
 🧩 Used with forms that include file uploads (<input type="file" />).
 
-now using multer we are first retireiving the file from the user and then stroing tii locally on the server inside the public->temp folder. then taking files from it and storing it on the cloudinary.
+now using multer we are first retireiving the file from the user and then storing it locally on the server inside the public->temp folder. then taking files from it and storing it on the cloudinary.
 
 

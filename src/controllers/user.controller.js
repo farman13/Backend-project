@@ -4,7 +4,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js"
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
-const registerUser = AsyncHandler(async (req, res) => {
+export const registerUser = AsyncHandler(async (req, res) => {
 
     const { username, fullName, email, password } = req.body;
 
@@ -62,4 +62,48 @@ const registerUser = AsyncHandler(async (req, res) => {
 
 })
 
-export { registerUser };
+
+export const loginUser = AsyncHandler(async (req, res) => {
+
+    const { username, email, password } = req.body;
+
+    if (!username && !email) {
+        throw new ApiError(403, "Missing username or email")
+    }
+
+    const user = await User.findOne({
+        $or: [username, email]
+    })
+
+    if (await user.isPasswordCorrect(password)) {
+        res.status(401).json(
+            new ApiResponse(401, "Incorrect Password")
+        )
+    }
+
+    const { accessToken, refreshToken } = generateAccessAndRefreshToken(user._id);
+
+    const options = {
+        http: true,
+        secure: true
+    }
+
+    res.status(200)
+        .cookie('accessToken', accessToken, options)
+        .cookie('refreshToken', refreshToken, options)
+        .json(
+            new ApiResponse(200, accessToken, refreshToken, "User logged In successfully")
+        )
+})
+
+
+const generateAccessAndRefreshToken = async (userId) => {
+    const user = await User.findById(userId);
+
+    const accessToken = user.generateAccessToken();
+    const refreshToken = user.generateRefreshToken();
+
+    user.refreshToken = refreshToken;
+
+    return { accessToken, refreshToken };
+} 

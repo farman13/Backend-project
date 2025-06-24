@@ -50,7 +50,7 @@ const userSchema = new Schema({
     }
 )
 
-// this is the middleware(hook) which runs just before every db user collection operation (NOTE: we cannot use arrow function syntax here bcoz it dont have access to this operator)
+// this is the middleware(hook) which runs just before every db user collection operation (NOTE: we cannot use arrow function syntax here bcoz it dont have access to 'this' operator)
 userSchema.pre("save", async function (next) {
 
     if (!this.isModified("password")) return next();
